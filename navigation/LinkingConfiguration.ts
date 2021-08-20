@@ -12,7 +12,7 @@ export default {
     screens: {
       Root: {
         screens: {
-          TabOne: {
+          EngineersList: {
             screens: {
               TabOneScreen: 'one',
             },
