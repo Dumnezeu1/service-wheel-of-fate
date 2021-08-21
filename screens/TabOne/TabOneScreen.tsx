@@ -22,7 +22,13 @@ export default function TabOneScreen() {
 
   const navigation = useNavigation();
 
-  const Item = ({ id, name, avatar }: EnginnersDataType) => {
+  const addNewEngineer = () => {
+    navigation.navigate("AddNewEngineer");
+  };
+
+  const Item = (engineerData: EnginnersDataType) => {
+    const { id, name, avatar } = engineerData;
+
     const askDeleteEngineer = () => {
       Alert.alert("", `You wan't to delete engineer ${name}?`, [
         {
@@ -48,9 +54,7 @@ export default function TabOneScreen() {
 
     const editEngineerData = () => {
       navigation.navigate("EditEngineerScreen", {
-        engineerId: id,
-        engineerName: name,
-        engineerAvatar: avatar,
+        engineerData,
       });
     };
 
@@ -77,6 +81,17 @@ export default function TabOneScreen() {
     );
   };
 
+  const EngineersListHeader = () => {
+    return (
+      <View style={[styles.engineerItemContainer, { marginBottom: 5 }]}>
+        <Text>Add new engineer</Text>
+        <Pressable onPress={addNewEngineer} style={[styles.actionButton]}>
+          <MaterialIcons name="add" color={"black"} size={20} />
+        </Pressable>
+      </View>
+    );
+  };
+
   const renderItem = React.useMemo(
     () =>
       ({ item: { name, id, avatar } }: { item: EnginnersDataType }) =>
@@ -89,9 +104,10 @@ export default function TabOneScreen() {
       <FlatList
         data={engineersData.engineersDataCx}
         renderItem={renderItem}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.id.toString()}
         contentContainerStyle={{ padding: 10 }}
         ItemSeparatorComponent={() => <View style={{ marginBottom: 5 }} />}
+        ListHeaderComponent={EngineersListHeader}
       />
     </SafeAreaView>
   );
@@ -117,5 +133,5 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     borderRadius: 5,
   },
-  avatar: { width: 40, height: 40, marginRight: 10 },
+  avatar: { width: 40, height: 40, marginRight: 10, borderRadius: 5 },
 });

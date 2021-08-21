@@ -11,6 +11,7 @@ import { Text } from "react-native";
 
 import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
+import AddNewEngineerScreen from "../screens/TabOne/AddNewEngineerScreen";
 import EditEngineerScreen from "../screens/TabOne/EditEngineerScreen";
 import TabOneScreen from "../screens/TabOne/TabOneScreen";
 import TabTwoScreen from "../screens/TabTwo/TabTwoScreen";
@@ -75,6 +76,11 @@ function TabOneNavigator() {
         name="EditEngineerScreen"
         component={EditEngineerScreen}
         options={{ headerTitle: "Engineer Profile" }}
+      />
+      <TabOneStack.Screen
+        name="AddNewEngineer"
+        component={AddNewEngineerScreen}
+        options={{ headerTitle: "Add a new engineer" }}
       />
     </TabOneStack.Navigator>
   );

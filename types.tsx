@@ -16,6 +16,7 @@ export type BottomTabParamList = {
 export type TabOneParamList = {
   TabOneScreen: undefined;
   EditEngineerScreen: undefined;
+  AddNewEngineer: undefined;
 };
 
 export type TabTwoParamList = {

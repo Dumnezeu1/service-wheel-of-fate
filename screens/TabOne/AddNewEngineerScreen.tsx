@@ -6,38 +6,42 @@ import {
   useEngineersContext,
 } from "../../context/engineersContext";
 
-interface EditEngineerScreenProps {
-  route: {
-    params: {
-      engineerData: EnginnersDataType;
-    };
-  };
-}
-
-function EditEngineerScreen({ route }: EditEngineerScreenProps) {
-  const { engineerData } = route.params;
-
+function AddNewEngineerScreen() {
   const navigation = useNavigation();
 
   const [engineersData, setEngineersData] = useEngineersContext();
 
   const submitEngineerChanges = (name: string, avatar: string, id: number) => {
-    const newItemObject = {
-      id,
+    const highestId = engineersData.engineersDataCx.sort(
+      (a, b) => b.id - a.id
+    )[0]?.id;
+    const highestIdToSet = highestId ? highestId + 1 : 1;
+
+    const newItem = {
+      id: highestIdToSet,
       avatar,
       name,
     };
-    const listWithItemEdited = engineersData.engineersDataCx.map((item) => {
-      if (item.id === id) {
-        return newItemObject;
+
+    const whereToBeAdded = [...engineersData.engineersDataCx, newItem].sort(
+      (a, b) => {
+        const firstGreater = a.id < b.id;
+        const secondGrater = a.id > b.id;
+
+        if (secondGrater) {
+          return -1;
+        }
+        if (firstGreater) {
+          return 1;
+        }
+        return 0;
       }
-      return item;
-    });
+    );
 
     setEngineersData((prev) => {
       return {
         ...prev,
-        engineersDataCx: listWithItemEdited,
+        engineersDataCx: whereToBeAdded,
       };
     });
     navigation.goBack();
@@ -45,10 +49,9 @@ function EditEngineerScreen({ route }: EditEngineerScreenProps) {
 
   return (
     <EngineerForm
-      engineerData={engineerData}
       submitButtonTitle="Change details"
       submitEngineerChanges={submitEngineerChanges}
     />
   );
 }
-export default EditEngineerScreen;
+export default AddNewEngineerScreen;
