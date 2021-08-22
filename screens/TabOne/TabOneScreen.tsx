@@ -48,45 +48,16 @@ export default function TabOneScreen() {
         (engineerData) => engineerData.id !== id
       );
 
-      // let mergeList = engineersData.engineersShifts
-      //   .map((shift) => {
-      //     const { assignedEngineers, day } = shift;
-      //     const engineers = assignedEngineers.map((engineerData) => {
-      //       const { engineerId } = engineerData;
-      //       const otherList = engineersData.engineersDataCx.find(
-      //         ({ id }) => engineerId === id
-      //       );
-      //       return {
-      //         ...engineerData,
-      //         ...otherList,
-      //       };
-      //     });
-
-      //     const filterUndefinedEngineers = engineers.filter(
-      //       ({ name }) => name !== undefined
-      //     );
-      //     if (filterUndefinedEngineers.length === 2) return { day, engineers };
-      //   })
-      //   .filter((item) => item?.day);
-
-      // const compare: EngineersShiftsType = engineersData.engineersShifts.map((shift) => {
-      //   const { assignedEngineers, day } = shift;
-      //   const engineersAvailable = assignedEngineers.filter(
-      //     ({ engineerId }) => {
-      //       return engineersData.engineersDataCx.some(
-      //         ({ id }) => id === engineerId
-      //       );
-      //     }
-      //   );
-
-      //     return { ...day, ...engineersAvailable };
-      // });
+      const formattedShift: EngineersShiftsType[] =
+        engineersData.engineersShifts.filter(({ assignedEngineers }) => {
+          return assignedEngineers.some(({ engineerId }) => engineerId !== id);
+        });
 
       setEngineersData((prev) => {
         return {
           ...prev,
           engineersDataCx: newEngineerData,
-          // engineersShifts: compare,
+          engineersShifts: formattedShift,
         };
       });
 
@@ -94,7 +65,10 @@ export default function TabOneScreen() {
         "engineersData",
         JSON.stringify(newEngineerData)
       );
-      // await AsyncStorage.setItem("engineersShifts", JSON.stringify(compare));
+      await AsyncStorage.setItem(
+        "engineersShifts",
+        JSON.stringify(formattedShift)
+      );
 
       toastCustom({
         type: "success",

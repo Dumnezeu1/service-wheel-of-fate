@@ -1,10 +1,12 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
+import moment from "moment";
 import React, { useEffect } from "react";
 import { Text, View } from "react-native";
 import Colors from "../constants/Colors";
 import {
   EngineersShiftsType,
+  EnginnersDataType,
   useGlobalContext,
 } from "../context/globalContext";
 
@@ -76,12 +78,15 @@ function SplashScreen() {
 
   useEffect(() => {
     const getAsyncValues = async () => {
-      const engineersShiftsValue = await AsyncStorage.getItem(
-        "engineersShifts"
-      ).then((req: any) => JSON.parse(req));
-      const engineersDataValue = await AsyncStorage.getItem(
-        "engineersData"
-      ).then((req: any) => JSON.parse(req));
+      const engineersShiftsValue: EngineersShiftsType[] =
+        await AsyncStorage.getItem("engineersShifts").then((req: any) =>
+          JSON.parse(req)
+        );
+      const engineersDataValue: EnginnersDataType[] =
+        await AsyncStorage.getItem("engineersData").then((req: any) =>
+          JSON.parse(req)
+        );
+
       setEngineersData((prev) => {
         return {
           ...prev,
@@ -90,10 +95,58 @@ function SplashScreen() {
           appLoading: false,
         };
       });
+
+      // await AsyncStorage.removeItem("engineersShifts");
+      // await AsyncStorage.removeItem("engineersData");
     };
 
     getAsyncValues();
   }, []);
+
+  useEffect(() => {
+    if (engineersData.engineersDataCx?.length > 2) {
+      const today: Date = new Date();
+
+      const todayFormat = moment(today).format("DD MMM");
+
+      const wheelOfFate = engineersData.engineersShifts.some(({ day }) => {
+        const formatDate = moment(day).format("DD MMM");
+        return formatDate === todayFormat;
+      });
+
+      // check if day existas in shifts
+      if (!wheelOfFate) {
+        const random = Math.floor(
+          Math.random() * engineersData.engineersDataCx.length
+        );
+
+        const firstEngineer = engineersData.engineersDataCx[random].id;
+        const secondEngineer = engineersData.engineersDataCx.filter(
+          ({ id }) => id !== firstEngineer
+        )[random].id;
+
+        const randomEngineersShift: EngineersShiftsType = {
+          day: today,
+          assignedEngineers: [
+            {
+              engineerId: firstEngineer,
+              hour: "first",
+            },
+            {
+              engineerId: secondEngineer,
+              hour: "second",
+            },
+          ],
+        };
+        setEngineersData((prev) => {
+          return {
+            ...prev,
+            engineersShifts: [...prev.engineersShifts, randomEngineersShift],
+          };
+        });
+      }
+    }
+  }, [engineersData]);
 
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>

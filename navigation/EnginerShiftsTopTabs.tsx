@@ -4,6 +4,7 @@ import { createMaterialTopTabNavigator } from "@react-navigation/material-top-ta
 import ShiftsListScreen from "../screens/TabTwo/ShiftsListScreen";
 import CarrouselViewScreen from "../screens/TabTwo/CarrouselViewScreen";
 import CalendarScreen from "../screens/TabTwo/CalendarScreen";
+import TabelScreen from "../screens/TabTwo/TabelScreen";
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -42,6 +43,16 @@ export default function EnginerShiftsTopTabs() {
         component={CalendarScreen}
         options={{
           tabBarLabel: "Calendar",
+          // tabBarIcon: ({ color, size }) => (
+          //   <MaterialCommunityIcons name="settings" color={color} size={size} />
+          // ),
+        }}
+      />
+      <Tab.Screen
+        name="TabelScreen"
+        component={TabelScreen}
+        options={{
+          tabBarLabel: "Tabel",
           // tabBarIcon: ({ color, size }) => (
           //   <MaterialCommunityIcons name="settings" color={color} size={size} />
           // ),

@@ -33,7 +33,7 @@ function ShiftsListScreen() {
                 </View>
                 <View style={styles.shiftHourContainer}>
                   <Text style={{ color: "white" }}>
-                    {hour.charAt(0).toUpperCase() + hour.slice(1)} shift
+                    {hour.charAt(0).toUpperCase() + hour.slice(1)}
                   </Text>
                 </View>
               </View>
@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.light.tint,
     alignItems: "center",
     justifyContent: "center",
-    width: 100,
+    width: 60,
     padding: 5,
     borderRadius: 5,
   },
