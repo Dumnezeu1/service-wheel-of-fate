@@ -21,4 +21,6 @@ export type TabOneParamList = {
 
 export type TabTwoParamList = {
   TabTwoScreen: undefined;
+  CreateShift: undefined;
+  AssignShift: undefined;
 };

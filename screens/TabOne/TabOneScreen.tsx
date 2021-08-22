@@ -13,12 +13,13 @@ import { Text, View } from "../../components/Themed";
 import { MaterialIcons, AntDesign } from "@expo/vector-icons";
 import {
   EnginnersDataType,
-  useEngineersContext,
-} from "../../context/engineersContext";
+  useGlobalContext,
+} from "../../context/globalContext";
 import { useNavigation } from "@react-navigation/native";
+import { toastCustom } from "../../components/ToastCustom";
 
 export default function TabOneScreen() {
-  const [engineersData, setEngineersData] = useEngineersContext();
+  const [engineersData, setEngineersData] = useGlobalContext();
 
   const navigation = useNavigation();
 
@@ -49,6 +50,10 @@ export default function TabOneScreen() {
           ...prev,
           engineersDataCx: newEngineerData,
         };
+      });
+      toastCustom({
+        type: "success",
+        text: "Engineer deleted",
       });
     };
 

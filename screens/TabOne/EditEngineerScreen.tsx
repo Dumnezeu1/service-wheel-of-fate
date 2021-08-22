@@ -3,8 +3,8 @@ import React from "react";
 import EngineerForm from "../../components/EngineerForm";
 import {
   EnginnersDataType,
-  useEngineersContext,
-} from "../../context/engineersContext";
+  useGlobalContext,
+} from "../../context/globalContext";
 
 interface EditEngineerScreenProps {
   route: {
@@ -19,7 +19,7 @@ function EditEngineerScreen({ route }: EditEngineerScreenProps) {
 
   const navigation = useNavigation();
 
-  const [engineersData, setEngineersData] = useEngineersContext();
+  const [engineersData, setEngineersData] = useGlobalContext();
 
   const submitEngineerChanges = (name: string, avatar: string, id: number) => {
     const newItemObject = {

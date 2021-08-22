@@ -7,8 +7,15 @@ export interface EnginnersDataType {
   name: string;
 }
 
+export interface EngineersShiftsType {
+  engineerId: number;
+  day: Date;
+  hour: string;
+}
+
 type AuthContextType = {
   engineersDataCx: EnginnersDataType[];
+  engineersShifts: EngineersShiftsType[];
 };
 
 const useValue = () =>
@@ -75,7 +82,8 @@ const useValue = () =>
         name: "Ten Item",
       },
     ],
+    engineersShifts: [],
   });
 
-export const { Provider: EngineersProvider, useTracked: useEngineersContext } =
+export const { Provider: GlobalProvider, useTracked: useGlobalContext } =
   createContainer(useValue);

@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import * as ImagePicker from "expo-image-picker";
 import { Image, Platform, Pressable, TextInput, View } from "react-native";
 import { StyleSheet, Text } from "react-native";
-import { EnginnersDataType } from "../context/engineersContext";
+import { EnginnersDataType } from "../context/globalContext";
 
 interface EngineerFormType {
   engineerData?: EnginnersDataType;

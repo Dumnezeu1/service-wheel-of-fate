@@ -14,6 +14,8 @@ import useColorScheme from "../hooks/useColorScheme";
 import AddNewEngineerScreen from "../screens/TabOne/AddNewEngineerScreen";
 import EditEngineerScreen from "../screens/TabOne/EditEngineerScreen";
 import TabOneScreen from "../screens/TabOne/TabOneScreen";
+import AssignShiftScreen from "../screens/TabTwo/AssignShiftScreen";
+import CreateShiftScreen from "../screens/TabTwo/CreateShiftScreen";
 import TabTwoScreen from "../screens/TabTwo/TabTwoScreen";
 import { BottomTabParamList, TabOneParamList, TabTwoParamList } from "../types";
 
@@ -95,6 +97,16 @@ function TabTwoNavigator() {
         name="TabTwoScreen"
         component={TabTwoScreen}
         options={{ headerTitle: "Engineers Shifts" }}
+      />
+      <TabTwoStack.Screen
+        name="CreateShift"
+        component={CreateShiftScreen}
+        options={{ headerTitle: "Create shift" }}
+      />
+      <TabTwoStack.Screen
+        name="AssignShift"
+        component={AssignShiftScreen}
+        options={{ headerTitle: "Assign shift" }}
       />
     </TabTwoStack.Navigator>
   );

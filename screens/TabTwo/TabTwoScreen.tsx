@@ -1,52 +1,47 @@
 import * as React from "react";
 
-import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import ShiftsListScreen from "./ShiftsListScreen";
-import CarrouselViewScreen from "./CarrouselViewScreen";
-import CalendarScreen from "./CalendarScreen";
-
-const Tab = createMaterialTopTabNavigator();
+import EnginerShiftsTopTabs from "../../navigation/EnginerShiftsTopTabs";
+import { Pressable, StyleSheet, Text, View } from "react-native";
+import { MaterialIcons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 
 export default function TabTwoScreen() {
+  const navigation = useNavigation();
+  const createNewShift = () => {
+    navigation.navigate("CreateShift");
+  };
   return (
-    <Tab.Navigator
-      initialRouteName="ShiftsListScreen"
-      screenOptions={{
-        tabBarActiveTintColor: "black",
-        tabBarLabelStyle: { fontSize: 12 },
-        tabBarStyle: { backgroundColor: "rgba(229, 229, 229,1)" },
-      }}
-    >
-      <Tab.Screen
-        name="ShiftsListScreen"
-        component={ShiftsListScreen}
-        options={{
-          tabBarLabel: "List",
-          // tabBarIcon: ({ color, size }) => (
-          //   <MaterialCommunityIcons name="home" color={color} size={size} />
-          // ),
-        }}
-      />
-      <Tab.Screen
-        name="CarrouselViewScreen"
-        component={CarrouselViewScreen}
-        options={{
-          tabBarLabel: "Carousel",
-          // tabBarIcon: ({ color, size }) => (
-          //   <MaterialCommunityIcons name="settings" color={color} size={size} />
-          // ),
-        }}
-      />
-      <Tab.Screen
-        name="CalendarViewScreen"
-        component={CalendarScreen}
-        options={{
-          tabBarLabel: "Calendar",
-          // tabBarIcon: ({ color, size }) => (
-          //   <MaterialCommunityIcons name="settings" color={color} size={size} />
-          // ),
-        }}
-      />
-    </Tab.Navigator>
+    <View style={styles.container}>
+      <Pressable style={styles.newShiftContainer} onPress={createNewShift}>
+        <Text>Add new shift</Text>
+
+        <View style={[styles.actionButton]}>
+          <MaterialIcons name="add" color={"black"} size={20} />
+        </View>
+      </Pressable>
+      <EnginerShiftsTopTabs />
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    // alignItems: 'center',
+    // justifyContent: 'center',
+  },
+  newShiftContainer: {
+    flexDirection: "row",
+    backgroundColor: "white",
+    padding: 10,
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  actionButton: {
+    backgroundColor: "rgba(229, 229, 229,1)",
+    padding: 5,
+    borderRadius: 5,
+    height: 30,
+    width: 30,
+  },
+});

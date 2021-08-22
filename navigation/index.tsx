@@ -11,6 +11,8 @@ import {
 import { createStackNavigator } from "@react-navigation/stack";
 import * as React from "react";
 import { ColorSchemeName } from "react-native";
+import Toast from "react-native-toast-message";
+import { toastConfig } from "../components/ToastCustom";
 
 import NotFoundScreen from "../screens/NotFoundScreen";
 import { RootStackParamList } from "../types";
@@ -28,6 +30,7 @@ export default function Navigation({
       theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
     >
       <RootNavigator />
+      <Toast config={toastConfig} ref={(ref) => Toast.setRef(ref)} />
     </NavigationContainer>
   );
 }
