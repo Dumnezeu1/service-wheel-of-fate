@@ -1,3 +1,4 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import EngineerForm from "../../components/EngineerForm";
@@ -21,7 +22,11 @@ function EditEngineerScreen({ route }: EditEngineerScreenProps) {
 
   const [engineersData, setEngineersData] = useGlobalContext();
 
-  const submitEngineerChanges = (name: string, avatar: string, id: number) => {
+  const submitEngineerChanges = async (
+    name: string,
+    avatar: string,
+    id: number
+  ) => {
     const newItemObject = {
       id,
       avatar,
@@ -40,6 +45,10 @@ function EditEngineerScreen({ route }: EditEngineerScreenProps) {
         engineersDataCx: listWithItemEdited,
       };
     });
+    await AsyncStorage.setItem(
+      "engineersData",
+      JSON.stringify(listWithItemEdited)
+    );
     navigation.goBack();
   };
 

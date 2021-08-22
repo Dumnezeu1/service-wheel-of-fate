@@ -1,3 +1,4 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
@@ -33,7 +34,7 @@ function AssignShiftScreen({ route }: EditEngineerScreenProps) {
     setShifts(reverseShifts);
   };
 
-  const createShift = () => {
+  const createShift = async () => {
     const shiftArray: EngineersShiftsType[] = [
       {
         day: shiftDate,
@@ -55,6 +56,10 @@ function AssignShiftScreen({ route }: EditEngineerScreenProps) {
         engineersShifts: [...prev.engineersShifts, ...shiftArray],
       };
     });
+    await AsyncStorage.setItem(
+      "engineersShifts",
+      JSON.stringify([...engineersData.engineersShifts, ...shiftArray])
+    );
     toastCustom({
       type: "success",
       text: "Shift created",

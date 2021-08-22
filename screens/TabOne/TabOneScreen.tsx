@@ -12,11 +12,13 @@ import { Text, View } from "../../components/Themed";
 
 import { MaterialIcons, AntDesign } from "@expo/vector-icons";
 import {
+  EngineersShiftsType,
   EnginnersDataType,
   useGlobalContext,
 } from "../../context/globalContext";
 import { useNavigation } from "@react-navigation/native";
 import { toastCustom } from "../../components/ToastCustom";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function TabOneScreen() {
   const [engineersData, setEngineersData] = useGlobalContext();
@@ -41,16 +43,59 @@ export default function TabOneScreen() {
       ]);
     };
 
-    const deleteEngineer = () => {
+    const deleteEngineer = async () => {
       const newEngineerData = engineersData.engineersDataCx.filter(
         (engineerData) => engineerData.id !== id
       );
+
+      // let mergeList = engineersData.engineersShifts
+      //   .map((shift) => {
+      //     const { assignedEngineers, day } = shift;
+      //     const engineers = assignedEngineers.map((engineerData) => {
+      //       const { engineerId } = engineerData;
+      //       const otherList = engineersData.engineersDataCx.find(
+      //         ({ id }) => engineerId === id
+      //       );
+      //       return {
+      //         ...engineerData,
+      //         ...otherList,
+      //       };
+      //     });
+
+      //     const filterUndefinedEngineers = engineers.filter(
+      //       ({ name }) => name !== undefined
+      //     );
+      //     if (filterUndefinedEngineers.length === 2) return { day, engineers };
+      //   })
+      //   .filter((item) => item?.day);
+
+      // const compare: EngineersShiftsType = engineersData.engineersShifts.map((shift) => {
+      //   const { assignedEngineers, day } = shift;
+      //   const engineersAvailable = assignedEngineers.filter(
+      //     ({ engineerId }) => {
+      //       return engineersData.engineersDataCx.some(
+      //         ({ id }) => id === engineerId
+      //       );
+      //     }
+      //   );
+
+      //     return { ...day, ...engineersAvailable };
+      // });
+
       setEngineersData((prev) => {
         return {
           ...prev,
           engineersDataCx: newEngineerData,
+          // engineersShifts: compare,
         };
       });
+
+      await AsyncStorage.setItem(
+        "engineersData",
+        JSON.stringify(newEngineerData)
+      );
+      // await AsyncStorage.setItem("engineersShifts", JSON.stringify(compare));
+
       toastCustom({
         type: "success",
         text: "Engineer deleted",

@@ -1,3 +1,4 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import EngineerForm from "../../components/EngineerForm";
@@ -9,7 +10,11 @@ function AddNewEngineerScreen() {
 
   const [engineersData, setEngineersData] = useGlobalContext();
 
-  const submitEngineerChanges = (name: string, avatar: string, id: number) => {
+  const submitEngineerChanges = async (
+    name: string,
+    avatar: string,
+    id: number
+  ) => {
     if (name && avatar) {
       const highestId = engineersData.engineersDataCx.sort(
         (a, b) => b.id - a.id
@@ -43,6 +48,10 @@ function AddNewEngineerScreen() {
           engineersDataCx: whereToBeAdded,
         };
       });
+      await AsyncStorage.setItem(
+        "engineersData",
+        JSON.stringify(whereToBeAdded)
+      );
       toastCustom({
         type: "success",
         text: "Engineer added",

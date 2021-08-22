@@ -13,8 +13,10 @@ import * as React from "react";
 import { ColorSchemeName } from "react-native";
 import Toast from "react-native-toast-message";
 import { toastConfig } from "../components/ToastCustom";
+import { useGlobalContext } from "../context/globalContext";
 
 import NotFoundScreen from "../screens/NotFoundScreen";
+import SplashScreen from "../screens/SplashScreen";
 import { RootStackParamList } from "../types";
 import BottomTabNavigator from "./BottomTabNavigator";
 import LinkingConfiguration from "./LinkingConfiguration";
@@ -40,9 +42,16 @@ export default function Navigation({
 const Stack = createStackNavigator<RootStackParamList>();
 
 function RootNavigator() {
+  const [engineersData, setEngineersData] = useGlobalContext();
+
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Root" component={BottomTabNavigator} />
+      {engineersData.appLoading ? (
+        <Stack.Screen name="Splash" component={SplashScreen} />
+      ) : (
+        <Stack.Screen name="Root" component={BottomTabNavigator} />
+      )}
+
       <Stack.Screen
         name="NotFound"
         component={NotFoundScreen}

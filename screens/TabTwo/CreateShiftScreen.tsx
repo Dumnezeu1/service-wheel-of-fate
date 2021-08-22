@@ -52,7 +52,7 @@ export const CreateShiftScreen = () => {
   const goToAssignShift = () => {
     if (shiftDate && selectedEngineers.length === 2) {
       navigation.navigate("AssignShift", {
-        shiftDate,
+        shiftDate: shiftDate.toISOString(),
         selectedEngineers,
       });
     } else {
