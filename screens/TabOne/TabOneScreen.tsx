@@ -113,6 +113,13 @@ export default function TabOneScreen() {
         contentContainerStyle={{ padding: 10 }}
         ItemSeparatorComponent={() => <View style={{ marginBottom: 5 }} />}
         ListHeaderComponent={EngineersListHeader}
+        ListEmptyComponent={
+          <View style={{ marginVertical: 100 }}>
+            <Text style={{ textAlign: "center", fontSize: 30 }}>
+              Empty list
+            </Text>
+          </View>
+        }
       />
     </SafeAreaView>
   );

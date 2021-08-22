@@ -52,8 +52,6 @@ function EngineerForm({
       quality: 1,
     });
 
-    console.log(result);
-
     if (!result.cancelled) {
       setEngineerAvatar(result.uri);
     }

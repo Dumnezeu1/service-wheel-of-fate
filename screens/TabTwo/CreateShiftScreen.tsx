@@ -22,7 +22,6 @@ import { toastCustom } from "../../components/ToastCustom";
 
 export interface SelectedEngineersType {
   engineerId: number;
-  shiftDate: Date;
   engineerName: string;
   engineerAvatar: string;
 }
@@ -32,7 +31,7 @@ export const CreateShiftScreen = () => {
 
   const [engineersData, setEngineersData] = useGlobalContext();
 
-  const [date, setDate] = useState(new Date());
+  const [shiftDate, setShiftDate] = useState(new Date());
   const [show, setShow] = useState(false);
 
   const [selectedEngineers, setSelectedEngineers] = useState<
@@ -40,29 +39,20 @@ export const CreateShiftScreen = () => {
   >([]);
 
   const onChange = (event: any, selectedDate: any) => {
-    const currentDate = selectedDate || date;
+    const currentDate = selectedDate || shiftDate;
     setShow(Platform.OS === "ios");
-    setDate(currentDate);
+    setSelectedEngineers([]);
+    setShiftDate(currentDate);
   };
 
   const showPicker = () => {
     setShow(true);
   };
 
-  const getYesterDay = () => {
-    var date = new Date();
-
-    date;
-
-    date.setDate(date.getDate() - 1);
-
-    return date;
-  };
-
   const goToAssignShift = () => {
-    if (date && selectedEngineers.length === 2) {
+    if (shiftDate && selectedEngineers.length === 2) {
       navigation.navigate("AssignShift", {
-        shiftDate: date,
+        shiftDate,
         selectedEngineers,
       });
     } else {
@@ -82,7 +72,6 @@ export const CreateShiftScreen = () => {
           ...prev,
           {
             engineerId: id,
-            shiftDate: date,
             engineerName: name,
             engineerAvatar: avatar,
           },
@@ -92,7 +81,6 @@ export const CreateShiftScreen = () => {
           prev[0],
           {
             engineerId: id,
-            shiftDate: date,
             engineerName: name,
             engineerAvatar: avatar,
           },
@@ -154,19 +142,30 @@ export const CreateShiftScreen = () => {
     );
   };
 
+  const getYesterDay = useMemo(() => {
+    const nowDate = new Date(shiftDate);
+
+    nowDate;
+
+    nowDate.setDate(nowDate.getDate() - 1);
+
+    return nowDate;
+  }, [shiftDate]);
+
   const lastDayShifts = useMemo(() => {
     const getYesterDayShift = engineersData.engineersShifts.filter(
       ({ day }) => {
         return (
-          moment(day).format("DD MMM") ===
-          moment(getYesterDay()).format("DD MMM")
+          moment(day).format("DD MMM") === moment(getYesterDay).format("DD MMM")
         );
       }
     );
 
     const getAvaibleEngineers = engineersData.engineersDataCx.filter(
       ({ id }) => {
-        return getYesterDayShift.every(({ engineerId }) => engineerId !== id);
+        return getYesterDayShift.every(({ assignedEngineers }) => {
+          return assignedEngineers.every(({ engineerId }) => engineerId !== id);
+        });
       }
     );
 
@@ -175,11 +174,13 @@ export const CreateShiftScreen = () => {
 
   const existingShiftThisDay = useMemo(() => {
     const getYesterDayShift = engineersData.engineersShifts.some(({ day }) => {
-      return moment(day).format("DD MMM") === moment(date).format("DD MMM");
+      return (
+        moment(day).format("DD MMM") === moment(shiftDate).format("DD MMM")
+      );
     });
 
     return getYesterDayShift;
-  }, [engineersData, date]);
+  }, [engineersData, shiftDate]);
 
   const renderItem = React.useMemo(
     () =>
@@ -196,7 +197,7 @@ export const CreateShiftScreen = () => {
       {show && (
         <DateTimePicker
           testID="dateTimePicker"
-          value={date}
+          value={shiftDate}
           mode={"date"}
           is24Hour={true}
           display="default"
@@ -206,7 +207,7 @@ export const CreateShiftScreen = () => {
       )}
       <View style={styles.selectedDateContainer}>
         <Text>Selected Date: </Text>
-        <Text>{moment(date).format("DD MMM")}</Text>
+        <Text>{moment(shiftDate).format("DD MMM")}</Text>
       </View>
 
       <FlatList

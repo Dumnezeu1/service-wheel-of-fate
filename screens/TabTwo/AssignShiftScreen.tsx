@@ -36,14 +36,17 @@ function AssignShiftScreen({ route }: EditEngineerScreenProps) {
   const createShift = () => {
     const shiftArray: EngineersShiftsType[] = [
       {
-        engineerId: selectedEngineers[0].engineerId,
-        day: selectedEngineers[0].shiftDate,
-        hour: shifts[0],
-      },
-      {
-        engineerId: selectedEngineers[1].engineerId,
-        day: selectedEngineers[1].shiftDate,
-        hour: shifts[1],
+        day: shiftDate,
+        assignedEngineers: [
+          {
+            engineerId: selectedEngineers[0].engineerId,
+            hour: shifts[0],
+          },
+          {
+            engineerId: selectedEngineers[1].engineerId,
+            hour: shifts[1],
+          },
+        ],
       },
     ];
     setEngineersData((prev) => {

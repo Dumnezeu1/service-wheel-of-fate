@@ -8,9 +8,11 @@ export interface EnginnersDataType {
 }
 
 export interface EngineersShiftsType {
-  engineerId: number;
   day: Date;
-  hour: string;
+  assignedEngineers: {
+    engineerId: number;
+    hour: string;
+  }[];
 }
 
 type AuthContextType = {
