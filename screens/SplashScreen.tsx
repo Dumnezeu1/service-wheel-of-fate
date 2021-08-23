@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import moment from "moment";
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { Text, View } from "react-native";
 import Colors from "../constants/Colors";
 import {
@@ -102,8 +102,42 @@ function SplashScreen() {
     getAsyncValues();
   }, []);
 
+  // wheel of fortune, if no one is assigned this day, it will create an shift with random engineers
   useEffect(() => {
-    if (engineersData.engineersDataCx?.length > 2) {
+    const getYesterDay = () => {
+      const nowDate = new Date();
+
+      nowDate;
+
+      nowDate.setDate(nowDate.getDate() - 1);
+
+      return nowDate;
+    };
+
+    const lastDayShifts = () => {
+      const getYesterDayShift = engineersData.engineersShifts.filter(
+        ({ day }) => {
+          return (
+            moment(day).format("DD MMM") ===
+            moment(getYesterDay()).format("DD MMM")
+          );
+        }
+      );
+
+      const getAvaibleEngineers = engineersData.engineersDataCx.filter(
+        ({ id }) => {
+          return getYesterDayShift.every(({ assignedEngineers }) => {
+            return assignedEngineers.every(
+              ({ engineerId }) => engineerId !== id
+            );
+          });
+        }
+      );
+
+      return getAvaibleEngineers;
+    };
+
+    if (lastDayShifts().length > 2) {
       const today: Date = new Date();
 
       const todayFormat = moment(today).format("DD MMM");
@@ -115,12 +149,10 @@ function SplashScreen() {
 
       // check if day existas in shifts
       if (!wheelOfFate) {
-        const random = Math.floor(
-          Math.random() * engineersData.engineersDataCx.length
-        );
+        const random = Math.floor(Math.random() * lastDayShifts().length);
 
-        const firstEngineer = engineersData.engineersDataCx[random].id;
-        const secondEngineer = engineersData.engineersDataCx.filter(
+        const firstEngineer = lastDayShifts()[random].id;
+        const secondEngineer = lastDayShifts().filter(
           ({ id }) => id !== firstEngineer
         )[random].id;
 

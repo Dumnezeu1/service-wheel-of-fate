@@ -33,14 +33,18 @@ export default function TabOneScreen() {
     const { id, name, avatar } = engineerData;
 
     const askDeleteEngineer = () => {
-      Alert.alert("", `You wan't to delete engineer ${name}?`, [
-        {
-          text: "No",
-          onPress: () => console.log("Cancel Pressed"),
-          style: "cancel",
-        },
-        { text: "Yes", onPress: () => deleteEngineer() },
-      ]);
+      Alert.alert(
+        `You wan't to delete engineer ${name}?`,
+        "It will also delete the assigned shifts for this user",
+        [
+          {
+            text: "No",
+            onPress: () => console.log("Cancel Pressed"),
+            style: "cancel",
+          },
+          { text: "Yes", onPress: () => deleteEngineer() },
+        ]
+      );
     };
 
     const deleteEngineer = async () => {
